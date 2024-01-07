@@ -6,6 +6,19 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Minha pagina principal</h1>
+
+    <div class="data">
+        <h1>Hoje é {{ dados.dia }}</h1>
+        <h2>{{ dados.semana }}</h2>
+        <h3>Você treinou hoje ?</h3>
+        <form action="{% url 'index' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" name="botao" value="sim">Sim</button> 
+            <button type="submit" name="botao" value="nao">Não</button>
+        </form>
+        {% for treino in treinos %}
+        <h4>{{ treino }}</h4>
+        {% endfor %}
+    </div>
 </body>
 </html>

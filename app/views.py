@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from app.models import Pessoa
+from app.models import Pessoa, DiasTreino
 from datetime import datetime
+from django.utils import timezone
 
 class Usuario:
 
@@ -14,28 +15,60 @@ class Usuario:
         self.altura = altura
         self.imc = imc
     
-    @classmethod
-    def calcula_idade(cls, self):
-        cls.idade = cls.ano_atual - self.nascimento
-    
-    def calcula_imc(self):
-       return self.peso / (self.altura ** 2)
-    
-    @property
-    def imc(self):
-        return self.imc
-    
-    @imc.setter
-    def imc(self):
-        if self.imc == 0:
-            self.imc = self.calcula_imc()
 
         
 
 def index(request):
-    return render(request, 'index.html')
 
-
-def cadastro(request):
-
+    dia = datetime.now().date
+    semana = dia_semana(datetime.now().weekday()) 
     
+
+    data = {
+        'dia': dia,
+        'semana': semana
+    }
+
+    contador = request.session.get('qtd', 0)
+
+    if request.method == 'POST':
+        escolha = request.POST.get('botao')
+
+        if escolha == 'sim':
+            dia_treino = DiasTreino(treino=True, registro=timezone.now())
+            dia_treino.save()
+        
+        else:
+            dia_treino = DiasTreino(treino=False, registro=timezone.now())
+            dia_treino.save()
+            
+    treinos = DiasTreino.objects.all()
+
+    return render(request, 'index.html', {'data': data, 'treinos': treinos})
+
+
+
+def dia_semana(dia):
+    
+    match dia:
+
+        case 0:
+            return 'Segunda-Feira'
+        
+        case 1:
+            return 'Terça-Feira'
+        
+        case 2:
+            return 'Quarta-Feira'
+        
+        case 3:
+            return 'Quinta-Feira'
+        
+        case 4:
+            return 'Sexta-Feira'
+        
+        case 5:
+            return 'Sábado'
+        
+        case 6:
+            return 'Domingo'
