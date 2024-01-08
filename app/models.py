@@ -1,6 +1,6 @@
 from django.db import models
-from django.utils import timezone
-# Create your models here.
+from datetime import datetime, timedelta
+
 
 class Pessoa(models.Model):
     nome = models.CharField(max_length=100, null=False, blank=False)
@@ -15,8 +15,7 @@ class Pessoa(models.Model):
 
 class DiasTreino(models.Model):
     treino = models.BooleanField()
-    registro = models.DateTimeField()
+    registro = models.DateTimeField(default=(datetime.now() - timedelta(hours=3)))
 
     def __str__(self):
-        registro_local = timezone.localtime(self.registro)
-        return f'DiasTreino [treino={self.treino}][registro={registro_local}]'
+        return f'DiasTreino [treino={self.treino}][registro={self.registro}]'
