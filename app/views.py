@@ -4,28 +4,20 @@ from app.calendario import Calendario
 from datetime import datetime
 
 
-# class Usuario:
+def home(request):
 
-#     ano_atual = datetime.now().year
-#     idade = 0
-
-#     def __init__(self, nome, nascimento, peso, altura, imc):
-#         self.nome = nome
-#         self.nascimento = nascimento
-#         self.peso = peso
-#         self.altura = altura
-#         self.imc = imc
-
-def index(request):
-
+    #minhas classe de calendário
     meu_calendario = Calendario()
     datas = meu_calendario.calendario()
 
-    treinos = DiasTreino.objects.all()
+    # variáveis de sessão
+    id_usuario = request.session.get('id_usuario', None)
+
+    #dados banco de dados
+    treinos = DiasTreino.objects.filter(usuario=id_usuario)
     ultimo_registro = treinos.last()
 
-    dias_treinados = DiasTreino.objects.filter(treino=True)
-
+    dias_treinados = DiasTreino.objects.filter(usuario=id_usuario, treino=True)
     qtd_treinos = len(dias_treinados)
 
     if request.method == 'POST':
@@ -36,9 +28,9 @@ def index(request):
             if ultimo_registro.registro.day != datetime.now().day:
 
                 if escolha == 'sim':
-                    dia_treino = DiasTreino(treino=True)
+                    dia_treino = DiasTreino(treino=True, usuario=id_usuario)
                 else:
-                    dia_treino = DiasTreino(treino=False)
+                    dia_treino = DiasTreino(treino=False, usuario=id_usuario)
                 
                 dia_treino.save()
         
@@ -50,6 +42,5 @@ def index(request):
         
             dia_treino.save()
 
-
-    return render(request, 'index.html', {'datas': datas, 'treinos': treinos, 'qtd_treinos': qtd_treinos})
+    return render(request, 'app/home.html', {'datas': datas, 'treinos': treinos, 'qtd_treinos': qtd_treinos})
 

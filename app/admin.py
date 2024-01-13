@@ -1,15 +1,10 @@
 from django.contrib import admin
-from app.models import Pessoa, DiasTreino
-
-
-class ListagemPessoas(admin.ModelAdmin):
-    list_display = ('id', 'nome')
-    list_display_links = ('id', 'nome')
+from app.models import DiasTreino
 
 
 class ListagemRegistro(admin.ModelAdmin):
-    list_display = ('id', 'treino', 'registro')
+    list_display = ('id', 'treino', 'registro', 'usuario')
 
-admin.site.register(Pessoa, ListagemPessoas)
+
 admin.site.register(DiasTreino, ListagemRegistro)
 

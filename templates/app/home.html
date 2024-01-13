@@ -16,7 +16,7 @@
         <h1>Hoje é {{ datas.data }}</h1>
         <h2>{{ datas.semana }}</h2>
         <h3>Você treinou hoje ?</h3>
-        <form action="{% url 'index' %}" method="post">
+        <form action="{% url 'home' %}" method="post">
             {% csrf_token %}
             <button type="submit" name="botao" value="sim">Sim</button> 
             <button type="submit" name="botao" value="nao">Não</button>
@@ -36,5 +36,8 @@
             <h3>{{ datas.dia }}/{{datas.mes_qtd}}</h3>
         </div>
     </div>
+
+    <a href="{% url 'logout' %}">Sair</a>
+
 </body>
 </html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Bem-Vindo</h1>
+    <h1> {{usuario.nome_usuario}} </h1>
+    <br>
+    {% for message in messages %}
+        <div role="alert">
+            <p>{{message}}</p>
+        </div>
+    {% endfor %}
+    <br><br>
+    {% if not is_log %}
+        <a href="{% url 'cadastro' %}">cadastra-se</a>
+        <a href="{% url 'login' %}">Entre</a>
+    {% else %}
+        <a href="{% url 'logout' %}">Sair</a>
+    {% endif %}
+</body>
+</html>
