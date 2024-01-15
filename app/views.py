@@ -1,19 +1,23 @@
 from django.shortcuts import render
 from app.models import DiasTreino
 from app.calendario import Calendario
+from app_usuarios.models import Usuario
 from datetime import datetime
 
 
 def home(request):
 
-    #minhas classe de calendário
+    # minhas classe de calendário
     meu_calendario = Calendario()
     datas = meu_calendario.calendario()
 
     # variáveis de sessão
     id_usuario = request.session.get('id_usuario', None)
 
-    #dados banco de dados
+    # objeto usuário
+    usuario_obj = Usuario.objects.get(pk=id_usuario)
+
+    # dados banco de dados
     treinos = DiasTreino.objects.filter(usuario=id_usuario)
     ultimo_registro = treinos.last()
 
@@ -28,9 +32,9 @@ def home(request):
             if ultimo_registro.registro.day != datetime.now().day:
 
                 if escolha == 'sim':
-                    dia_treino = DiasTreino(treino=True, usuario=id_usuario)
+                    dia_treino = DiasTreino(treino=True, usuario=usuario_obj)
                 else:
-                    dia_treino = DiasTreino(treino=False, usuario=id_usuario)
+                    dia_treino = DiasTreino(treino=False, usuario=usuario_obj)
                 
                 dia_treino.save()
         

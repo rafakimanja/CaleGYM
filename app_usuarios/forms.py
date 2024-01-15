@@ -63,7 +63,7 @@ class CadastroForms(forms.Form):
     peso = forms.DecimalField(
         label='Digite o seu peso',
         required=True,
-        max_digits=4,
+        max_digits=5,
         decimal_places=2,
         widget=forms.NumberInput(
             attrs = {

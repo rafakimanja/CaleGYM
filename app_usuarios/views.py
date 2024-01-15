@@ -88,4 +88,8 @@ def cadastro(request):
             messages.success(request, 'Cadastro realizado com sucesso!')
             return redirect('login')
 
+        else:
+            messages.error(request, 'Dados cadastrais inválidos')
+            return redirect('cadastro')
+
     return render(request, 'app_usuarios/cadastro.html', {'form': form})
