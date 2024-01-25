@@ -15,7 +15,7 @@ def index(request):
         messages.error(request, 'Você não esta logado')
         return render(request, 'app_usuarios/index.html')
     else:
-        return render(request, 'app_usuarios/index.html')
+        return redirect('home')
 
 
 def login(request):
@@ -93,3 +93,17 @@ def cadastro(request):
             return redirect('cadastro')
 
     return render(request, 'app_usuarios/cadastro.html', {'form': form})
+
+
+def update_usuario(request):
+
+    #variavel de sessão
+    id_usuario = request.session.get('id_usuario', None)
+
+    #busca banco de dados
+    obj_usuario = Usuario.objects.get(id=id_usuario)
+
+    #gerando o formulário
+    form = CadastroForms(instance=obj_usuario)
+
+    return render(request, 'app_usuarios/update_usuario.html', {'form': form})

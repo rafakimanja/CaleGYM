@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuario</title>
+</head>
+<body>
+    <body>
+        {% for message in messages %}
+            <div role="alert">
+                <p>{{message}}</p>
+            </div>
+        {% endfor %}
+        <h1>Login</h1>
+        <form action="{% url 'update_usuario' %}" method="post">
+            {% csrf_token %}
+            <div>
+                {% for field in form.visible_fields %}
+                <div>
+                    <label for="{{ field.id_for_label }}"> {{ field.label }} </label>
+                    {{field}}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="botao">
+                <button type="submit">Alterar Dados</button>
+            </div>
+        </form>
+    </body>
+</body>
+</html>

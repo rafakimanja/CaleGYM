@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from app.models import DiasTreino
 from app.calendario import Calendario
 from app_usuarios.models import Usuario
@@ -27,24 +28,19 @@ def home(request):
     if request.method == 'POST':
         escolha = request.POST.get('botao')
 
-        if ultimo_registro is not None:
+        if ultimo_registro.registro.day != datetime.now().day:
 
-            if ultimo_registro.registro.day != datetime.now().day:
-
-                if escolha == 'sim':
-                    dia_treino = DiasTreino(treino=True, usuario=usuario_obj)
-                else:
-                    dia_treino = DiasTreino(treino=False, usuario=usuario_obj)
-                
-                dia_treino.save()
+            if escolha == 'sim':
+                dia_treino = DiasTreino(treino=True, usuario=usuario_obj)
+            else:
+                dia_treino = DiasTreino(treino=False, usuario=usuario_obj)
+            
+            dia_treino.save()
         
         else:
-            if escolha == 'sim':
-                dia_treino = DiasTreino(treino=True)
-            else:
-                dia_treino = DiasTreino(treino=False)
+            messages.error(request, 'Não é possível registrar mais de 1 treino por dia!')
         
-            dia_treino.save()
-
+        return redirect('home')
+    
     return render(request, 'app/home.html', {'datas': datas, 'treinos': treinos, 'qtd_treinos': qtd_treinos})
 
