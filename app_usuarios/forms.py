@@ -7,7 +7,6 @@ class LoginForms(forms.Form):
         max_length=100,
         widget=forms.TextInput(
             attrs={
-                'class': 'input-control',
                 'placeholder': 'Seu nome de Login'
             }
         )
@@ -18,12 +17,10 @@ class LoginForms(forms.Form):
         max_length=25,
         widget=forms.PasswordInput(
             attrs={
-                'class': 'input-control',
                 'placeholder': 'Sua senha'
             }
         )
     )
-
 
 
 class CadastroForms(forms.Form):
@@ -33,7 +30,6 @@ class CadastroForms(forms.Form):
         max_length=100,
         widget=forms.TextInput(
             attrs={
-                'class': 'input-control',
                 'placeholder': 'Seu nome de Cadastro'
             }
         )
@@ -44,7 +40,6 @@ class CadastroForms(forms.Form):
         max_length=25,
         widget=forms.PasswordInput(
             attrs={
-                'class': 'input-control',
                 'placeholder': 'Até 25 caracteres'
             }
         )
@@ -55,7 +50,6 @@ class CadastroForms(forms.Form):
         max_length=25,
         widget=forms.PasswordInput(
             attrs={
-                'class': 'input-control',
                 'placeholder': 'Digite sua senha novamente'
             }
         )
@@ -67,8 +61,7 @@ class CadastroForms(forms.Form):
         decimal_places=2,
         widget=forms.NumberInput(
             attrs = {
-                'class': 'input-control',
-                'placeholder': 'Kg'
+                'placeholder': 'em Kg'
             }
         )
     )
@@ -77,8 +70,7 @@ class CadastroForms(forms.Form):
         required=True,
         widget=forms.NumberInput(
             attrs={
-                'class': 'input-control',
-                'placeholder': 'Cm'
+                'placeholder': 'em Cm'
             }
         )
     )

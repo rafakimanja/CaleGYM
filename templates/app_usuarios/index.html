@@ -1,25 +1,20 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tela Inicial</title>
+    <!--CSS-->
+    <link rel="stylesheet" href="{% static '/style/style-index.css' %}">
 </head>
 <body>
-    <h1>Bem-Vindo</h1>
-    <h1> {{usuario.nome_usuario}} </h1>
-    <br>
-    {% for message in messages %}
-        <div role="alert">
-            <p>{{message}}</p>
-        </div>
-    {% endfor %}
-    <br><br>
-    {% if not is_log %}
-        <a href="{% url 'cadastro' %}">cadastra-se</a>
-        <a href="{% url 'login' %}">Entre</a>
-    {% else %}
-        <a href="{% url 'logout' %}">Sair</a>
-    {% endif %}
+    <div class="titulo">
+        <h1>Cale<span>GYM</span></h1><img src="{% static '/assets/haltere.png' %}" alt="" height="76px" width="76px">
+    </div>
+    <div class="botoes">
+        <a href="{% url 'login' %}">Fazer Login</a>
+        <a href="{% url 'cadastro' %}">Cadastre-se</a>
+    </div>
 </body>
 </html>

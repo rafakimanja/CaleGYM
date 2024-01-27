@@ -1,45 +1,85 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body{
-            background-color: black;
-            color: white;
-        }
-    </style>
+    <title>Home</title>
+    <!--CSS-->
+    <link rel="stylesheet" href="{% static '/style/header.css' %}">
+    <link rel="stylesheet" href="{% static '/style/style-home.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <body>
-    <div class="datas">
-        <h1>Hoje é {{ datas.data }}</h1>
-        <h2>{{ datas.semana }}</h2>
-        <h3>Você treinou hoje ?</h3>
-        <form action="{% url 'home' %}" method="post">
+
+    <header>
+        <h1>Cale<span>GYM</span></h1><img src="{% static '/assets/haltere.png' %}" alt="" height="20px" width="20px">
+        <div id="links-header">
+            <a href="tela-menu.html">Menu</a>
+            <a href="{% url 'logout' %}">Sair</a>
+        </div>
+    </header>
+
+    <div class="data">
+        <h1>Dia <span>{{ datas.dia }}</span> de {{ datas.mes_nome }} {{ datas.ano }}</h1>
+        <h3>{{ datas.semana }}</h3>
+    </div>
+
+    <div class="treino">
+        <h1>Você treinou hoje ?</h1>
+        <form action="{% url 'home' %}" method="POST">
             {% csrf_token %}
-            <button type="submit" name="botao" value="sim">Sim</button> 
-            <button type="submit" name="botao" value="nao">Não</button>
+            <button type="submit" name="botao" value="sim" id="sim">Sim</button>
+            <button type="submit" name="botao" value="nao" id="nao">Não</button>
         </form>
-        {% for treino in treinos %}
-        <h4>{{ treino }}</h4>
-        {% endfor %}
     </div>
 
-    <div class="calendario">
-        <div class="ano">
-            <h2>Ano de {{ datas.ano }}</h2>
-            <h3>Dias terinados: {{ qtd_treinos }} / 366</h3>
+    <h1 class="ultimo-treino"><span>Ultimo treino</span>: {{ ultimo_treino }}</h1>
+
+
+    <div class="menus">
+        <div class="infos">
+            <h3>{{ datas.mes_nome }}</h3>
+            <p>{{ datas.dia }}/{{ datas.mes_qtd }}</p>
         </div>
-        <div class="mes">
-            <h2>Mes: {{ datas.mes_nome }} </h2>
-            <h3>{{ datas.dia }}/{{datas.mes_qtd}}</h3>
+        <div class="infos">
+            <h3>Dias Treinados</h3>
+            <p>{{ qtd_treinos }}/366</p>
+        </div>
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+            <ol class="carousel-indicators">
+              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            </ol>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="infos">
+                    <h3>Ultimo Peso</h3>
+                    <p>{{ usuario_obj.peso }} KG</p>
+                    <div class="botao">
+                        <a href="{% url 'registra_peso' %}">Pesar-se</a>
+                    </div>  
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="infos">
+                    <h3>Seu IMC</h3>
+                    <p>{{ usuario_obj.imc }}</p>
+                </div>
+              </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Anterior</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Próximo</span>
+            </a>
         </div>
     </div>
-
-    <a href="{% url 'logout' %}">Sair</a>
-    <br>
-    <a href="{% url 'registra_peso' %}">Registrar Peso</a>
-
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

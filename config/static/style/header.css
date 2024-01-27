@@ -1,0 +1,36 @@
+header{
+    display: flex;
+    align-items: center;
+    height: 100px;
+    width: 100%;
+}
+
+header h1{
+    font: bold 13pt Arial;
+    margin-right: 5px;
+    margin-left: 60px;
+}
+
+#links-header {
+    margin-left: auto;
+    margin-right: 30px;
+}
+
+#links-header a {
+    margin-left: 10px;
+    text-decoration: underline;
+    color: black;
+    font: normal 11pt Arial; 
+}
+
+#links-header a:active {
+    background-color: white;
+}
+
+span{
+    color: #C80000;
+}
+
+header img{
+    transform: rotate(35deg);
+}

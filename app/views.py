@@ -24,6 +24,7 @@ def home(request):
 
     dias_treinados = DiasTreino.objects.filter(usuario=id_usuario, treino=True)
     qtd_treinos = len(dias_treinados)
+    ultimo_treino = dias_treinados.last()
 
     if request.method == 'POST':
         escolha = request.POST.get('botao')
@@ -42,5 +43,5 @@ def home(request):
         
         return redirect('home')
     
-    return render(request, 'app/home.html', {'datas': datas, 'treinos': treinos, 'qtd_treinos': qtd_treinos})
+    return render(request, 'app/home.html', {'datas': datas, 'treinos': treinos, 'qtd_treinos': qtd_treinos, 'usuario_obj': usuario_obj, 'ultimo_treino': ultimo_treino.registro.date})
 
