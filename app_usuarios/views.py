@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CadastroForms, LoginForms
-from .models import Usuario
+from .models import Usuario, PesoUsuario
 from .authenticate import Autenticacao
 
 
@@ -10,8 +10,6 @@ def index(request):
     autentic = Autenticacao()
 
     if not autentic.verifica_sessao(request):
-        # usuario = Usuario.objects.get(id=request.session['id_usuario'])
-        # return render(request, 'app_usuarios/index.html', {'usuario': usuario})
         messages.error(request, 'Você não esta logado')
         return render(request, 'app_usuarios/index.html')
     else:
@@ -107,3 +105,44 @@ def update_usuario(request):
     form = CadastroForms(instance=obj_usuario)
 
     return render(request, 'app_usuarios/update_usuario.html', {'form': form})
+
+
+def registra_peso(request):
+    
+    #variavel de sessão
+    id_usuario = request.session.get('id_usuario', None)
+
+    #busca banco de dados
+    obj_usuario = Usuario.objects.get(id=id_usuario)
+
+    if request.method == 'POST':
+
+        peso_form = request.POST.get('peso', None)
+
+        novo_registro_peso = PesoUsuario(peso=peso_form, usuario=obj_usuario) #criando novo registro
+
+        obj_usuario.peso = peso_form #atualizando na tabela usuarios
+        obj_usuario.save()
+
+        novo_registro_peso.save()
+        
+        messages.success(request, 'Peso atualizado')
+    
+    calcula_IMC(request)
+
+    return render(request, 'app_usuarios/registra_peso.html')
+
+
+def calcula_IMC(request):
+
+    #variavel de sessão
+    id_usuario = request.session.get('id_usuario', None)    
+
+    #busca banco de dados
+    usuario = Usuario.objects.get(id=id_usuario)
+
+    imc = usuario.peso / (usuario.altura ** 2)
+
+    usuario.imc = imc
+
+    usuario.save()

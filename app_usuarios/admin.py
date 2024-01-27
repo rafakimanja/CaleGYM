@@ -1,6 +1,5 @@
 from django.contrib import admin
-from app_usuarios.models import Usuario
-from app.models import DiasTreino
+from app_usuarios.models import Usuario, PesoUsuario
 
 
 class ListandoUsuarios(admin.ModelAdmin):
@@ -13,3 +12,11 @@ class ListandoUsuarios(admin.ModelAdmin):
 
 
 admin.site.register(Usuario, ListandoUsuarios)
+
+
+class ListandoPesoUsuarios(admin.ModelAdmin):
+    list_display = ('id', 'usuario', 'peso')
+    list_display_links = ('id', 'usuario')
+
+
+admin.site.register(PesoUsuario, ListandoPesoUsuarios)
