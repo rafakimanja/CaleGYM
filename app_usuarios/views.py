@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import CadastroForms, LoginForms
+from .forms import CadastroForms, LoginForms, UsuarioForms
 from .models import Usuario, PesoUsuario
 from .authenticate import Autenticacao
+import random
 
 
 def index(request):
@@ -93,7 +94,7 @@ def cadastro(request):
     return render(request, 'app_usuarios/cadastro.html', {'form': form})
 
 
-def update_usuario(request):
+def menu(request):
 
     #variavel de sessão
     id_usuario = request.session.get('id_usuario', None)
@@ -102,9 +103,17 @@ def update_usuario(request):
     obj_usuario = Usuario.objects.get(id=id_usuario)
 
     #gerando o formulário
-    form = CadastroForms(instance=obj_usuario)
+    form = UsuarioForms(instance=obj_usuario)
 
-    return render(request, 'app_usuarios/update_usuario.html', {'form': form})
+    if request.method == 'POST':
+        form = UsuarioForms(request.POST, instance=obj_usuario)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('update_usuario')
+
+    return render(request, 'app_usuarios/menu.html', {'form': form})
 
 
 def registra_peso(request):
@@ -114,6 +123,8 @@ def registra_peso(request):
 
     #busca banco de dados
     obj_usuario = Usuario.objects.get(id=id_usuario)
+
+    registro_pesos = PesoUsuario.objects.all()
 
     if request.method == 'POST':
 
@@ -127,22 +138,79 @@ def registra_peso(request):
         novo_registro_peso.save()
         
         messages.success(request, 'Peso atualizado')
+
+    return render(request, 'app_usuarios/registra_peso.html', {'registro_pesos': registro_pesos})
+
+
+def senha(request):
     
-    calcula_IMC(request)
-
-    return render(request, 'app_usuarios/registra_peso.html')
-
-
-def calcula_IMC(request):
-
     #variavel de sessão
-    id_usuario = request.session.get('id_usuario', None)    
+    id_usuario = request.session.get('id_usuario', None)
 
     #busca banco de dados
-    usuario = Usuario.objects.get(id=id_usuario)
+    obj_usuario = Usuario.objects.get(id=id_usuario)
 
-    imc = usuario.peso / (usuario.altura ** 2)
+    if request.method == 'POST':
 
-    usuario.imc = imc
+        senha_form = request.POST.get('senha', None)
 
-    usuario.save()
+        if senha_form == obj_usuario.senha:
+
+            nova_senha = request.POST.get('newsenha', None)
+
+            obj_usuario.senha = nova_senha
+
+            obj_usuario.save()
+
+            messages.success(request, 'Senha alterada com sucesso!')
+
+            return redirect('home')
+        
+        else:
+            messages.error(request, 'Senha incorreta!')
+            return redirect('senha')
+    
+    return render(request, 'app_usuarios/senha.html')
+
+
+def gera_senha(request):
+
+    #variavel de sessão
+    id_usuario = request.session.get('id_usuario', None)
+
+    senha_temp = gerador_de_senha()
+
+    if request.method == 'POST':
+
+        username = request.POST.get('username', None)
+
+        obj_usuario = Usuario.objects.get(nome_usuario=username)
+
+        obj_usuario.senha = senha_temp
+
+        obj_usuario.save()
+
+        return render(request, 'app_usuarios/gera_senha.html', {'senha_temp': senha_temp, 'delay': 5000, 'local': 'login'})
+    
+    if id_usuario is not None:
+
+        #busca banco de dados
+        obj_usuario = Usuario.objects.get(id=id_usuario)
+
+        obj_usuario.senha = senha_temp
+
+        obj_usuario.save()
+
+        return render(request, 'app_usuarios/gera_senha.html', {'senha_temp': senha_temp, 'delay': 5000, 'local': 'senha'})
+    
+    return render(request, 'app_usuarios/gera_senha.html')
+
+
+def gerador_de_senha():
+    caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMENOPQRSTUVWXYZ1234567890!@#$%&*'
+    senha = ''
+
+    for c in range(0, 6):
+        senha += caracteres[random.randint(0, len(caracteres))]
+
+    return senha

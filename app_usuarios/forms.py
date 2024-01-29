@@ -1,4 +1,5 @@
 from django import forms
+from app_usuarios.models import Usuario
 
 class LoginForms(forms.Form):
     nome_login = forms.CharField(
@@ -74,3 +75,20 @@ class CadastroForms(forms.Form):
             }
         )
     )
+
+class UsuarioForms(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        exclude = ['senha',]
+        labels = {
+            'nome_usuario': 'Nome de Usuário',
+            'peso': 'Peso (em KG)',
+            'altura': 'Altura (em Cm)',
+            'imc': 'IMC'
+        }
+        widgets = {
+            'nome_usuario': forms.TextInput(),
+            'peso': forms.NumberInput(),
+            'altura': forms.NumberInput(),
+            'imc': forms.NumberInput()
+        }

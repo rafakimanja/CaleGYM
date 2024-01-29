@@ -1,20 +1,55 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!--CSS-->
+    <link rel="stylesheet" href="{% static '/style/style-registra_peso.css' %}">
+    <link rel="stylesheet" href="{% static '/style/header.css' %}">
 </head>
 <body>
-    {% for message in messages %}
-        <div role="alert">
-            <p>{{message}}</p>
+    <header>
+        <h1>Cale<span>GYM</span></h1><img src="{% static '/assets/haltere.png' %}" alt="" height="20px" width="20px">
+        <div id="links-header">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'logout' %}">Sair</a>
         </div>
-    {% endfor %}
-    <form action="{% url 'registra_peso' %}" method="post">
-        {% csrf_token %}
-        <label for="">Peso atual: </label><input type="number" name="peso" value="peso" step="0.01">
-        <input type="submit" value="Registrar">
-    </form>
+    </header>
+
+    <div class="formulario">
+        <form action="{% url 'registra_peso' %}" method="post">
+            {% csrf_token %}
+            <label for="">Peso atual: </label><input type="number" name="peso" value="peso" step="0.01" placeholder="0.00 KG">
+            <input type="submit" value="Registrar">
+        </form>
+    </div>
+
+    <div class="tabela">
+        <h2>Registro de Pesos</h2>
+        <table>
+            <tr>
+                <th>Usuario</th>
+                <th>Peso</th>
+                <th>Data</th>
+            </tr>
+            {% if registro_pesos %}
+            {% for registro in registro_pesos %}
+            <tr>
+                <td>{{ registro.usuario }}</td>
+                <td>{{ registro.peso }} KG</td>
+                <td>{{ registro.data_registro.day }}/{{ registro.data_registro.month }}/{{ registro.data_registro.year }}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td>None</td>
+                <td>None</td>
+                <td>None</td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
 </body>
 </html>

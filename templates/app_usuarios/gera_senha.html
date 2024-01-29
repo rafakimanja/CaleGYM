@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gera Senha</title>
+    <!--CSS-->
+    <link rel="stylesheet" href="{% static '/style/style-gera_senha.css' %}">
+    <link rel="stylesheet" href="{% static '/style/header.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Cale<span>GYM</span></h1><img src="{% static '/assets/haltere.png' %}" alt="" height="20px" width="20px">
+        {% if request.session.id_usuario %}
+            <div id="links-header">
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'logout' %}">Sair</a>
+            </div>
+        {% else %}
+        <div id="links-header">
+            <a href="{% url 'index' %}">Voltar</a>
+        </div>
+        {% endif %}
+    </header>
+
+    {% if not request.session.id_usuario %}
+        <div class="formulario">
+            <form action="{% url 'gera_senha' %}" method="post">
+                {% csrf_token %}
+                <label for="">Nome de Usuario: </label><input type="text" name="username" placeholder="seu nome de usuário" required>
+                <div class="conteudo">
+                    <button type="submit">Gerar Senha Aleatória</button>
+                    <h3 id="SenhaGerada">{{ senha_temp }}</h3>
+                </div>
+            </form>
+        </div>
+    {% else %}
+    <div class="conteudo">
+        <button type="submit">Gerar Senha Aleatória</button>
+        <h3 id="SenhaGerada">{{ senha_temp }}</h3>
+    </div>
+    {% endif %}
+</body>
+</html>

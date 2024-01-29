@@ -13,6 +13,9 @@
 
     <header>
         <h1>Cale<span>GYM</span></h1><img src="{% static '/assets/haltere.png' %}" alt="" height="20px" width="20px">
+        <div id="links-header">
+            <a href="{% url 'index' %}">Voltar</a>
+        </div>
     </header>
 
     <div class="formulario">
@@ -23,7 +26,7 @@
                     {{field}}
                 {% endfor %}
             <input type="submit" value="Entrar">
-            <a href="#">Esqueceu a Senha ?</a>
+            <a href="{% url 'gera_senha' %}">Esqueceu a Senha ?</a>
         </form>
     </div>
 
